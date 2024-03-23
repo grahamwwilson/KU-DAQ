@@ -1,0 +1,29 @@
+Exercise 1
+
+Decode (preferably with a computer program) the data from the 
+file, Exercise1-CH4.txt. This contains 13 events recorded on 3-20-2024 
+in which in addition to the 24 kHz trigger firing on 
+channel 0 (twice per event), there are two occurrences of channel 4. 
+These were collected over a time interval of 4000 s, where 
+a total of 96 million triggers were recorded.
+It is expected that these 13 events are predominantly from cosmic-ray muons 
+that stopped in the NaI scintillating crystal and subsequently decayed 
+emitting an electron. The mean life of a muon at rest 
+is 2.1969811(22) micro-seconds (Particle Data Group). 
+The TDC was set to 25 ps resolution (aka LSB least-significant-bit).
+
+Ideally your program prints out the 
+decoded data values according to the bit-fields specified in 
+the V1290 Manual (see Documents/CAEN folder) section 6, and can 
+be used to do the same for future data-sets. 
+
+Once you have the data figured out, it should be possible to calculate 
+the CH4 time difference for each event, and measure the mean value for 
+this sample. What is the smallest and the largest time difference observed?
+What is the error on your mean?
+
+You may also want to plot the time of arrival of the first CH4 signal with 
+respect to the event trigger signal (the second CH0 time with a value 
+near 45 micro-seconds). What do you expect to see? 
+
+It would be good to get this completed by before class on Friday, March 29th.
