@@ -4,7 +4,7 @@
 
 // V1729 Base Address and Address Modifier Definitions
 
-const int V1729_BA = 0x30000000;
+const int V1729_BA = 0x31000000;
 const int V1729_am = 0x09;
 const int V1729_BLT_am = 0x0B;
 
