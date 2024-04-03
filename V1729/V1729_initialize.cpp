@@ -2,7 +2,7 @@
 // before and after reconfiguration of the operating parameters and 
 // generate an output logfile  
 //
-// This was called initialize, but essentially it justs reads registers 
+// This is still called initialize, but essentially it justs reads registers 
 // and logs the values.
 //             Graham      03-APR-2024 
 //
