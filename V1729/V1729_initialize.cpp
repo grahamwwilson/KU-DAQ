@@ -32,7 +32,7 @@ int V1729_initialize(int initialize_count, usb_dev_handle *udev) //sets a variab
 
   long Data = 0;
  
-  logfile << "Values at initialization " << initialize_count << endl << endl;
+  logfile << "Values for initialization check number " << initialize_count << endl;
 
   VME_read_32(udev, V1729_am, V1729_BA + V1729_Trigger_Threshold_DAC_VME, &Data);  
   logfile << endl << "TRIGGER THRESHOLD DAC: 0x" << hex << getbits(Data,11,12) << endl;
@@ -94,7 +94,7 @@ int V1729_initialize(int initialize_count, usb_dev_handle *udev) //sets a variab
   VME_read_32(udev, V1729_am, V1729_BA + V1729_En_VME_IRQ, &Data);  
   logfile << endl << "EN VME IRQ: 0x" << hex << getbits(Data,0,1) << endl;
 
-  logfile << "End of initialzation " << initialize_count << endl;
+  logfile << "End of initialization check number " << initialize_count << endl;
 
   logfile.close(); 
  
