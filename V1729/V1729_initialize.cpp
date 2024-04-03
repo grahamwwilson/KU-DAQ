@@ -1,10 +1,10 @@
-// Program to check the configuration of the V1729 and 
-// before and after reconfiguration of the operating parameters and 
-// generate an output logfile  
+// Program to check the configuration of the V1729 before and after 
+// reconfiguration of the operating parameters and generate an output logfile  
 //
-// This is still called initialize, but essentially it justs reads registers 
+// This is still called initialize, but essentially it just reads registers 
 // and logs the values.
-//             Graham      03-APR-2024 
+//
+//             Graham W. Wilson   03-APR-2024 
 //
 
 #include <libxxusb.h>
