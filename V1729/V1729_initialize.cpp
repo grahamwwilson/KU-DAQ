@@ -1,4 +1,11 @@
-//  Program to intialize the V1729 and generate an output logfile  
+// Program to check the configuration of the V1729 and 
+// before and after reconfiguration of the operating parameters and 
+// generate an output logfile  
+//
+// This was called initialize, but essentially it justs reads registers 
+// and logs the values.
+//             Graham      03-APR-2024 
+//
 
 #include <libxxusb.h>
 #include <stdio.h>
@@ -17,17 +24,17 @@ int V1729_initialize(int initialize_count, usb_dev_handle *udev) //sets a variab
 
   if(initialize_count == 1)
   {
-    logfile.open("Data_Initialize_1.out");
+    logfile.open("Data_Initialized_1.out");
   }
 
   if(initialize_count == 2)
   {
-    logfile.open("Data_Initialize_2.out");
+    logfile.open("Data_Initialized_2.out");
   }
 
   if(initialize_count == 3)
   {
-    logfile.open("Data_Initialize_3.out");
+    logfile.open("Data_Initialized_3.out");
   }
 
   long Data = 0;
