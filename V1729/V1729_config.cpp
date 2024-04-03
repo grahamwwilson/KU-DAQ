@@ -32,6 +32,9 @@ int V1729_config(usb_dev_handle *udev)
 
   // Load the trigger DAC value
   VME_write_32(udev, V1729_am, V1729_BA + V1729_Load_Trigger_Threshold_DAC, 1);
+  
+  // Set the pilot frequency (50 MHz or 100 MHz) corresponding to 1 GHz or 2GHz sampling
+  VME_write_32(udev, V1729_am, V1729_BA + V1729_Fp_Frequency, V1729_Fp_Frequency_Value);  
 
   // Setting the value of the Pre Trigger
   VME_write_32(udev, V1729_am, V1729_BA + V1729_Pretrig_LSB, V1729_Pretrig_LSB_Value);
