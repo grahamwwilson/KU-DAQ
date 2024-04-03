@@ -17,8 +17,9 @@
 #include "getbits.h"
 using namespace std;
 
-int V1729_initialize(int initialize_count, usb_dev_handle *udev) //sets a variable so you can tell when the initialize 
-                                                                 //function was implemented 
+int V1729_initialize(int initialize_count, usb_dev_handle *udev) //uses a variable to aid 
+                                                                 //figuring out when this initialize 
+                                                                 //function was called 
 {
   ofstream logfile;
 
