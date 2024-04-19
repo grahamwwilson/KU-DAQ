@@ -8,6 +8,7 @@
 //
 
 #include <iostream>
+#include <stdio.h>
 #include <fstream>
 #include <iomanip>
 #include <sys/time.h>
@@ -30,11 +31,33 @@ using std::fixed;
 void mysleep(){
 
 // A programmatic sleep
+
     cout << "Programmatic sleep " << endl;
-    for (int i=0; i<2000000; i++){
-       if (i%1000000==0)cout << dec << i << endl;
+    for (unsigned int i=0; i<2000000; i++){
+       if (i%1000000==0)cout << "PS  " << dec << i << endl;
+    }   
+}
+
+void specifiedsleep(unsigned int maxloops = 2000000){
+
+// A programmatic specified sleep
+
+    cout << "Programmatic specified sleep " << endl;
+    struct timeval tim;
+    double tstart,tend;
+    
+    gettimeofday(&tim, NULL);
+    tstart = tim.tv_sec + (tim.tv_usec/1000000.0);
+    printf("Start PSS: %.6lf s\n",tstart);    
+    
+    for (unsigned int i=0; i<maxloops; i++){
+       if (i%100000==0)cout << "PSS " << dec << i << endl;
     }
     
+    gettimeofday(&tim, NULL);
+    tend = tim.tv_sec + (tim.tv_usec/1000000.0);
+    printf("End   PSS: %.6lf s\n",tend);     
+      
 }
 
 int main (int argc, char *argv[])
@@ -254,7 +277,10 @@ int main (int argc, char *argv[])
                    nevs_read += 1;
                    if( nevs_read%20000==1 ){                                     // Roughly 1Hz is DAQ rate of 20 kHz
                       lout << "byr, nr, st, bytot: " << dec << nbltBytes << " " << dec << nevs_read << " " << dec << tdc.ReadRegister(EV_STORED) << " " << dec << bytes_read << endl;  
-                   }                   
+                   }
+                   if( nevs_read%20000==0 ){                                     // Roughly 1Hz is DAQ rate of 20 kHz
+                      specifiedsleep();              // Simulate effect of substantial dead time associated with V1729 readout. Will need to adjust the parameters.  
+                   }                                         
                }            
 //               lout << " Type: 0x" << std::setfill('0') << std::setw(2) << hex << dtype << " Data: 0x" << std::setfill('0') << std::setw(8) << hex << r << endl;
            }   
