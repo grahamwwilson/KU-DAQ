@@ -38,7 +38,7 @@ void mysleep(){
     }   
 }
 
-void specifiedsleep(unsigned int maxloops = 2000000){
+void specifiedsleep(unsigned int maxloops = 1300000){
 
 // A programmatic specified sleep
 
@@ -77,7 +77,7 @@ int main (int argc, char *argv[])
     //    clock_t start_time, end_time;
 //    long Data = 0;
 
-    const unsigned int NMIN = 5;      // Software trigger requirement on the minimum number of words in the event to write the event to the data file.
+    const unsigned int NMIN = 6;      // Software trigger requirement on the minimum number of words in the event to write the event to the data file.
     const int NSIZE = 192;   // Number of 32-bit words to transfer
     
     long int bytes_read = 0;
@@ -222,12 +222,11 @@ int main (int argc, char *argv[])
     int cr = tdc.ReadRegister(CONTROL);
     lout << "tdc CONTROL: 0x" << hex << cr << endl;
     
-    /* // Now set the TRIGGER TIME TAG ENABLE bit in the CONTROL register (COSTS an extra word per event)
+    // Now set the TRIGGER TIME TAG ENABLE bit in the CONTROL register (COSTS an extra word per event)
     int newval = cr | 0x0200;
     tdc.WriteRegister(CONTROL, newval);
     cr = tdc.ReadRegister(CONTROL);
     lout << "tdc CONTROL: 0x" << hex << cr << endl; 
-    */
     
     lout << "tdc Almost Full Level Register: 0x" << hex << tdc.ReadRegister(AF_LEV) << endl;
     tdc.WriteRegister(AF_LEV, 0xC0);   // 192 words
@@ -275,11 +274,12 @@ int main (int argc, char *argv[])
                    }
                    ev_vector.clear();
                    nevs_read += 1;
-                   if( nevs_read%20000==1 ){                                     // Roughly 1Hz is DAQ rate of 20 kHz
+                   if( nevs_read%24000==1 ){                                     // 1 Hz for DAQ rate of 24 kHz
                       lout << "byr, nr, st, bytot: " << dec << nbltBytes << " " << dec << nevs_read << " " << dec << tdc.ReadRegister(EV_STORED) << " " << dec << bytes_read << endl;  
                    }
-                   if( nevs_read%20000==0 ){                                     // Roughly 1Hz is DAQ rate of 20 kHz
-                      specifiedsleep();              // Simulate effect of substantial dead time associated with V1729 readout. Will need to adjust the parameters.  
+                   if( nevs_read%16000==0 ){                                     // 1.5Hz for DAQ rate of 24 kHz
+                      specifiedsleep();              // Simulate effect of substantial dead time associated with V1729 readout. Will need to adjust the parameters. 
+                      lout << "post sleep buffer content: " << dec << tdc.ReadRegister(EV_STORED) << endl; 
                    }                                         
                }            
 //               lout << " Type: 0x" << std::setfill('0') << std::setw(2) << hex << dtype << " Data: 0x" << std::setfill('0') << std::setw(8) << hex << r << endl;
