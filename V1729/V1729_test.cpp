@@ -46,10 +46,6 @@ int main ()
   ofstream  datafile;
   datafile.open("RawData.out");
 
-// decoded data only
-//  ofstream pdatafile;
-//  pdatafile.open("Data.out"); 
-
   xxusb_device_type devices[100]; 
   struct usb_device *dev;
   usb_dev_handle *udev;       // Device Handle 
@@ -166,5 +162,5 @@ int main ()
   printf("End program: %.6lf s\n",t1);
 
   return 0; 
-}
 
+}
