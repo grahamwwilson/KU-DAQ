@@ -22,12 +22,17 @@ CFLAGS		+= $(INCLUDEDIRS) $(SOFLAG)
 CFLAGS		+= $(CXXLIBDIRS) $(CXXLIBS)
 LDFLAGS		= $(CXXFLAGS)
 
+OBJS = V1290N_configure.o
+
 EXECUTABLE = V1290N-Read
 
 main:
 	$(CXX) $(CXXFLAGS) \
-	$(CXXLIBS) $(CXXLIBDIRS) -o $(EXECUTABLE) V1290N-Read.cpp
+	$(CXXLIBS) $(CXXLIBDIRS) -o $(EXECUTABLE) V1290N-Read.cpp $(OBJS)
 	@echo "Done"
 
 clean:
-	$(RM) $(OBJ)
+	$(RM) $(OBJS)
+	
+objects: $(OBJS)
+        $(CXXC) -o $@ $(OBJS)	
