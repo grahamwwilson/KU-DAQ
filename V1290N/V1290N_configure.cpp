@@ -6,7 +6,7 @@
 #include "V1290N-CAEN.h"
 using namespace std;
 
-void V1290N_configure(VMUSB::V1290N tdc, std::ofstream lout){
+void V1290N_configure(VMUSB::V1290N tdc, std::ofstream& lout){
 
 // Start TDC configuration and checking
     lout << "tdc " << tdc.GetRevision() << endl;

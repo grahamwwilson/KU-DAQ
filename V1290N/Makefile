@@ -4,10 +4,9 @@
 
 # Specify verbose version to understand what is going on
 CXX		= g++ -v -g
-CXXC		= g++ -c -g
+CXXC	= g++ -c -g
 RM		= rm -f
 CC		= gcc-3.3
-
 LD		= gcc-3.3
 LDFLAGS		= -O
 SOFLAGS		= -shared
@@ -24,15 +23,11 @@ LDFLAGS		= $(CXXFLAGS)
 
 OBJS = V1290N_configure.o
 
-EXECUTABLE = V1290N-Read
+PROGRAM = V1290N-Read
 
-main:
+$(PROGRAM): $(PROGRAM).cpp
 	$(CXX) $(CXXFLAGS) \
-	$(CXXLIBS) $(CXXLIBDIRS) -o $(EXECUTABLE) V1290N-Read.cpp $(OBJS)
+	$(CXXLIBS) $(CXXLIBDIRS) -o $(PROGRAM) V1290N-Read.cpp
 	@echo "Done"
 
-clean:
-	$(RM) $(OBJS)
-	
-objects: $(OBJS)
-        $(CXXC) -o $@ $(OBJS)	
+
