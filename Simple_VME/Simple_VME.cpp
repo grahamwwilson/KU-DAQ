@@ -42,28 +42,35 @@
 #include <libxxusb.h>
 #include <unistd.h>  // For sleep()
 #include <cstring>
+#include "../Headers/CLI11.hpp"
 
-int main ()
+int testVMUSB (int which)
 {
 
-// New C/C++ standards dont-like mutable character array but that is used in the interface.
+// New C/C++ standards complain about mutable character array but this is what is 
+// required by xxusb_serial_open.
 
 // Wiener VM-USB received Summer 2006
     const char* constString = "VM0036";    // The one with the VHQ
 // The second Wiener VM-USB received 2007?
-//    const char* constString = "VM0064";    // The one with the V560N scaler    
+    const char* constString2 = "VM0064";    // The one with the V560N scaler    
 
 // Allocate memory for the modifiable char array
     char* serialString =  new char[strlen(constString) + 1];  // +1 for null terminator. This is the serial number of VM_USB 
 
 // Copy the content of the const string to the modifiable one
-    strcpy(serialString, constString);
+    if (which==1) {
+        strcpy(serialString, constString);
+    }
+    else{
+        strcpy(serialString, constString2);    
+    }
 
     libusb_device_handle *udev;       // Device Handle     
 
     //GWW Use code as in vmusb_flash.cpp
     long fwid;
-    int ret;
+    int rc;
 
     udev = xxusb_serial_open(serialString);  // Open Device and get handle
     
@@ -74,7 +81,7 @@ int main ()
 	
 	delete[] serialString;
 
-	return 0;
+	return -1;
     }
     else{
 	printf ("\nEstablished communication with VM_USB \n\n");        
@@ -85,16 +92,16 @@ int main ()
 
     sleep(1);
 
-    ret=VME_register_read(udev,0,&fwid);
-    printf("\nThe return code is %dx\n\n",ret);
-    printf("\nThe Firmware ID is %lx\n\n\n",fwid);
+    rc=VME_register_read(udev,0,&fwid);
+    printf("\nThe return code is %d \n",rc);
+    printf("\nThe Firmware ID is %ld \n",fwid);
 
-    // Set Red LED to light with NIM1
+    // Set Red LED to light with NIM I1 input 
     printf ("\nCalling VME_LED_settings\n\n");
     VME_LED_settings(udev,1,1,0,0);   
     printf ("\nCalled VME_LED_settings\n\n");
 
-    // Set DGG channel A to trigger on NIM1, output on O1,
+    // Set DGG channel A to trigger on NIM I1 input, output on NIM O1,
     //     with delay =10 x 12.5ns,
     //     and width =  20 x 12.5ns,
     //     not latching or inverting
@@ -104,4 +111,24 @@ int main ()
     
     // Close the Device
     xxusb_device_close(udev);
+    
+    return 0;
+}
+
+int main(int argc, char** argv){
+
+    CLI::App app{"Basic test of the VM-USB operation"};  
+        
+    int which = 1;
+    app.add_option("-w,--which", which, "Which crate?"); 
+    
+    CLI11_PARSE(app, argc, argv);
+    
+    std::cout << "which is set to " << which << std::endl;
+
+    int rc = testVMUSB(which);
+    printf ("\ntestVMUSB returns %d \n",rc);
+       
+    return 0;
+    
 }
