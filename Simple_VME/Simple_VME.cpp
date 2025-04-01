@@ -82,6 +82,7 @@ int testVMUSB (int which)
     }    
 
     udev = xxusb_serial_open(serialString);  // Open Device and get handle
+   // Open the USB device with the selected serial number
     
     // Make sure VM_USB opened OK
     if(!udev) 
