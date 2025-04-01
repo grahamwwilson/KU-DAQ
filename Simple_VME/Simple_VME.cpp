@@ -66,11 +66,20 @@ int testVMUSB (int which)
         strcpy(serialString, constString2);    
     }
 
-    libusb_device_handle *udev;       // Device Handle     
+    libusb_device_handle *udev = NULL;       // Device Handle     
 
     //GWW Use code as in vmusb_flash.cpp
     long fwid;
     int rc;
+    
+// Initialize libusb in main program
+    rc = libusb_init(NULL);
+    if (rc < 0) {
+        printf("libusb initialization failed\n");
+        return -1;
+    }else{
+        printf("libusb initialized OK\n");
+    }    
 
     udev = xxusb_serial_open(serialString);  // Open Device and get handle
     
@@ -78,6 +87,7 @@ int testVMUSB (int which)
     if(!udev) 
     {
 	printf ("\nFailed to open VM_USB \n\n");
+        libusb_exit(NULL);  // Clean up libusb	
 	
 	delete[] serialString;
 
@@ -120,7 +130,8 @@ int main(int argc, char** argv){
     CLI::App app{"Basic test of the VM-USB operation"};  
         
     int which = 1;
-    app.add_option("-w,--which", which, "Which crate?"); 
+    app.add_option("-w,--which", which, "Which crate? (1 for VM0036, 2 for VM0064)")
+        ->check(CLI::Range(1, 2));  // Ensure it's either 1 or 2    
     
     CLI11_PARSE(app, argc, argv);
     
