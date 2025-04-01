@@ -104,7 +104,13 @@ int testVMUSB (int which)
     sleep(1);
 
     rc=VME_register_read(udev,0,&fwid);
-    printf("\nThe return code is %d \n",rc);
+    printf("Number of bytes read during firmware ID check: %d\n", rc);  // Print the byte count from firmware ID check
+    if (rc <= 0) {  // If we didn't read any bytes or if there was an error
+        printf("Error reading firmware ID\n");
+        xxusb_device_close(udev);  // Close the device before exiting
+        libusb_exit(NULL);
+        return rc;  // Return the error code (number of bytes read)
+    }    
     printf("\nThe Firmware ID is %ld \n",fwid);
 
     // Set Red LED to light with NIM I1 input 
