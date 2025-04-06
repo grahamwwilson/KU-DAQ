@@ -38,6 +38,8 @@
 // May also need to export LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH although I don't think so.
 
 //#include <xx_usb.h>
+#include <iostream>
+#include <iomanip>
 #include <stdio.h>
 #include <libxxusb.h>
 #include <unistd.h>  // For sleep()
@@ -111,23 +113,26 @@ int testVMUSB (int which)
         libusb_exit(NULL);
         return rc;  // Return the error code (number of bytes read)
     }    
-    printf("\nThe Firmware ID is %ld \n",fwid);
+    printf("\nThe Firmware ID is %lx \n",fwid);
+    
+    std::cout << "The firmare ID is " << std::hex << fwid << std::endl;
 
     // Set Red LED to light with NIM I1 input 
     printf ("\nCalling VME_LED_settings\n\n");
     VME_LED_settings(udev,1,1,0,0);   
     printf ("\nCalled VME_LED_settings\n\n");
 
-    // Set DGG channel A to trigger on NIM I1 input, output on NIM O1,
+    // Set DGG channel A (2nd arg=0) to trigger on NIM I1 input (3rd argument =1), output on NIM O2 (4th arg =1)
     //     with delay =10 x 12.5ns,
     //     and width =  20 x 12.5ns,
     //     not latching or inverting
     printf ("\nCalling VME_DGG\n\n");
-    VME_DGG(udev,0,1,0,10,20,0,0);
+    VME_DGG(udev,0,1,1,10,20,0,0);
     printf ("\nCalled VME_DGG\n\n");
     
     // Close the Device
     xxusb_device_close(udev);
+    libusb_exit(NULL);
     
     return 0;
 }
