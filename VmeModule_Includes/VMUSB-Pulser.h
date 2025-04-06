@@ -22,7 +22,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include "libxxusb.h"
+//#include "libxxusb.h"
 #include "VMUSB-Card.h"
 #include "strtools.h"
 
@@ -37,7 +37,7 @@ namespace VMUSB {
 class Pulser 
 { 
  private:
-  usb_dev_handle *udev;
+  libusb_device_handle *udev;
   std::string mode;        // Frequency ("f") or Period configuration (currently non-"f")
   long ddg;
   long freqA;              // Frequency (Hz)
@@ -50,8 +50,8 @@ class Pulser
   int setf();
   int sett();
  public:
-  Pulser(usb_dev_handle*, int, long, long, std::string);
-  Pulser(usb_dev_handle*);
+  Pulser(libusb_device_handle*, int, long, long, std::string);
+  Pulser(libusb_device_handle*);
   ~Pulser();
   int reset1t(long, long);
   int reset1f(long, long);
@@ -65,10 +65,10 @@ class Pulser
   std::string params();
 };
 
-Pulser::Pulser(usb_dev_handle* udev){
+Pulser::Pulser(libusb_device_handle* udev){
   }
 
-Pulser::Pulser(usb_dev_handle* udev, int nim, long param1, long param2, std::string mode){
+Pulser::Pulser(libusb_device_handle* udev, int nim, long param1, long param2, std::string mode){
     // cout << "Snoozing for 1s after establishing communication " << endl;
     this->udev=udev;
     this->channel=nim;

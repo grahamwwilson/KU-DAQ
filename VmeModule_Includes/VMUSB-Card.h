@@ -5,11 +5,12 @@
 #define USB_UNIT
 
 #include "libxxusb.h"
-#include <usb.h>
+#include <libusb.h>
+#include <cstring>
 
 namespace VMUSB {
 
-int CheckDevice(usb_dev_handle* udev)
+int CheckDevice(libusb_device_handle *udev)
 { //Check if device is open. If not, end program
   if(udev)
     {
@@ -23,6 +24,7 @@ int CheckDevice(usb_dev_handle* udev)
     }
 }
 
+/*
 usb_dev_handle* DeviceUSB()
    {
      xxusb_device_type devices[99];
@@ -45,8 +47,9 @@ usb_dev_handle* DeviceUSBi(int usbindex)
     udev = xxusb_device_open(dev);
     return udev;
   }
+*/
 
-usb_dev_handle* DeviceUSBm(int usbmodule)
+libusb_device_handle *DeviceUSBm(int usbmodule)
   { //can only overload if part of object
 
 // Available VM-USB modules on July 27th 2011
@@ -57,25 +60,38 @@ usb_dev_handle* DeviceUSBm(int usbmodule)
 // Add diagnostics.    GWW Sept 9th 2011
 //
 
-    char* USBm1 = "VM0036";     // the one we use the most
-    char* USBm2 = "VM0064";     // the one currently used mostly for TDC stuff
+    const char* USBm1 = "VM0036";     // the one we use the most
+    const char* USBm2 = "VM0064";     // the one currently used mostly for TDC stuff
 
-    usb_dev_handle *udev;       // Device Handle
-    char* USBm;
+    libusb_device_handle *udev = NULL;       // Device Handle
+    int rc;
+    
+// Initialize libusb
+    rc = libusb_init(NULL);
+    if (rc < 0) {
+        printf("libusb initialization failed\n");
+        return NULL;
+    }else{
+        printf("libusb initialized OK\n");
+    }
+    
+    char* USBm = new char[strlen(USBm1) + 1];
 
     std::cout << " VM-USB::DeviceUSBm(int usbmodule) called with argument " << usbmodule << std::endl;
 
     // check module value. in future use a case statement?
     if (usbmodule == 2) {
-      USBm = USBm2;
+        strcpy(USBm, USBm2);
     }
     else {
-      USBm = USBm1;
+        strcpy(USBm, USBm1);
     }
 
     std::cout << " VM-USB::DeviceUSBm opening module with serial number " << USBm << std::endl;
 
     udev = xxusb_serial_open(USBm);
+    
+    delete[] USBm;
     return udev;
   }
 
